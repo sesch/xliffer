@@ -2,14 +2,18 @@ module XLIFFer
   class XLIFF
     class String
       attr_reader :id, :source, :target
-      def initialize(xml)
+      def initialize(xml, checkTarget = true)
         unless xml_element?(xml) and trans_unit?(xml)
           raise ArgumentError, "can't create a String without a trans-unit subtree"
         end
 
         @id = xml.attr('id')
         @source = get_source(xml)
-        @target = get_target(xml)
+        if checkTarget
+          @target = get_target(xml)
+        else
+          @target = ""
+        end
       end
 
       private
